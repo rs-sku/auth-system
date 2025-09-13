@@ -1,0 +1,67 @@
+[
+  {
+    "model": "auth_app.status",
+    "pk": 1,
+    "fields": {
+      "value": "default",
+      "rights": [1, 6, 7]
+    }
+  },
+  {
+    "model": "auth_app.status",
+    "pk": 2,
+    "fields": {
+      "value": "admin",
+       "rights": [1, 2, 3, 4, 5, 6, 7]
+    }
+  },
+  {
+    "model": "auth_app.right",
+    "pk": 1,
+    "fields": {
+      "value": "get"
+    }
+  },
+  {
+    "model": "auth_app.right",
+    "pk": 2,
+    "fields": {
+      "value": "post"
+    }
+  },
+  {
+    "model": "auth_app.right",
+    "pk": 3,
+    "fields": {
+      "value": "put"
+    }
+  },
+  {
+    "model": "auth_app.right",
+    "pk": 4,
+    "fields": {
+      "value": "patch"
+    }
+  },
+  {
+    "model": "auth_app.right",
+    "pk": 5,
+    "fields": {
+      "value": "delete"
+    }
+  },
+  {
+    "model": "auth_app.right",
+    "pk": 6,
+    "fields": {
+      "value": "head"
+    }
+  },
+  {
+    "model": "auth_app.right",
+    "pk": 7,
+    "fields": {
+      "value": "options"
+    }
+  }
+]
