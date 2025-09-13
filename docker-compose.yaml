@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    env_file: '.env'
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data
+
+  dbeaver:
+    image: dbeaver/cloudbeaver:latest
+    ports: 
+      - '8978:8978'
+
+networks:
+  default:
+    name: db_network
+    
