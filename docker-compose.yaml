@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   db:
-    image: postgres
+    image: postgres:latest
     env_file: '.env'
     ports:
       - '5432:5432'
@@ -15,7 +15,7 @@ services:
       retries: 20
   
   migrate:
-    image: api:latest
+    image: rssku/demo:1.0
     env_file: '.env'
     depends_on:
       db:
@@ -25,20 +25,35 @@ services:
              python src/manage.py migrate"
 
   api:
-    image: api:latest
+    image: rssku/demo:1.0
     env_file: '.env'
     ports:
       - '8000:8000'
+    volumes:
+      - ./volumes/static:/workdir/src/static
     depends_on:
       db:
         condition: service_healthy
-      
     command: >
-      sh -c "python src/manage.py collectstatic &&
+      sh -c "python src/manage.py collectstatic --noinput &&
              gunicorn core.wsgi:application -b 0.0.0.0:8000 -w 1" 
 
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    volumes:
+      - ./nginx/api.conf:/etc/nginx/conf.d/api.conf
+      - ./volumes/static:/workdir/src/static
+    command: ["/bin/sh", "-c", "rm -f /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
+      
 networks:
   default:
     name: service_network
+
+    
+
 
     
