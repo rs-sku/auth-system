@@ -9,11 +9,7 @@ def admin_protection(model: User):
     def decorator(func):
         @wraps(func)
         def wrapper(self, request):
-            user_obj = (
-                model.objects.select_related("status")
-                .filter(pk=request.session["user_id"])
-                .first()
-            )
+            user_obj = model.objects.select_related("status").filter(pk=request.session["user_id"]).first()
             if user_obj.status.value != "admin":
                 raise PermissionDenied()
             result = func(self, request)
@@ -29,9 +25,7 @@ def right_protection(model: Status):
         @wraps(func)
         def wrapper(self, request):
             status_obj = (
-                model.objects.prefetch_related("rights")
-                .filter(status_by_user__id=request.session["user_id"])
-                .first()
+                model.objects.prefetch_related("rights").filter(status_by_user__id=request.session["user_id"]).first()
             )
             right_obj = status_obj.rights.all()
             rights = [right.value for right in right_obj]

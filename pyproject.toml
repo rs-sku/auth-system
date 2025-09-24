@@ -2,3 +2,4 @@
 extend-select = ["I"]
 select = ["E", "F", "ANN"]
 exclude = ["**/migrations"]
+line-length = 120

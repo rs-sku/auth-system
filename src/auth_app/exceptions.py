@@ -7,9 +7,7 @@ def custom_exception_handler(exc, context):
 
     if response is not None:
         if exc.__class__.__name__ == "PermissionDenied":
-            response.data = {
-                "detail": "You do not have permission to perform this action"
-            }
+            response.data = {"detail": "You do not have permission to perform this action"}
             response.status_code = status.HTTP_403_FORBIDDEN
         elif exc.__class__.__name__ == "NotAuthenticated":
             response.data = {"detail": "Authentication credentials were not provided"}

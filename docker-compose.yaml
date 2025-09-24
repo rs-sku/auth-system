@@ -8,13 +8,37 @@ services:
       - '5432:5432'
     volumes:
       - ./volumes/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 10s
+      retries: 20
+  
+  migrate:
+    image: api:latest
+    env_file: '.env'
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "python src/manage.py makemigrations &&
+             python src/manage.py migrate"
 
-  dbeaver:
-    image: dbeaver/cloudbeaver:latest
-    ports: 
-      - '8978:8978'
+  api:
+    image: api:latest
+    env_file: '.env'
+    ports:
+      - '8000:8000'
+    depends_on:
+      db:
+        condition: service_healthy
+      
+    command: >
+      sh -c "python src/manage.py collectstatic &&
+             gunicorn core.wsgi:application -b 0.0.0.0:8000 -w 1" 
 
 networks:
   default:
-    name: db_network
+    name: service_network
+
     
